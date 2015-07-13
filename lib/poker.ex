@@ -1,5 +1,19 @@
 defmodule Poker do
 
+  @doc """
+  Given a deck of cards, deal cards into different hands. Deal rhytm (first 3, then 2 cards)
+  not implemented yet
+  """
+
+  @spec deal_cards(List, Integer, List) :: List
+  def deal_cards(deck, amount_players \\ 2, _deal_rhytm \\ [1]) do
+    deck
+    |> Stream.take(5 * amount_players)
+    |> Stream.with_index
+    |> Enum.group_by(fn({card, index}) -> rem(index, amount_players) end)
+    |> Enum.into [], fn({num, cards}) -> Enum.map(cards, fn({card, _num}) -> card end) end
+  end
+
   def compare_hands(list_of_hands) do
     list_of_hands
     |> Enum.map(&sort_hand/1)
